@@ -146,19 +146,20 @@
                             </div>
                             <br>
 
-                           
+
                             <div class="dreamit-auction-box wow fadeInDown animated animated animated animated animated" data-wow-delay=".6s">
 
                                 <div class="auction-box-inner">
 
                                     <div class="sign-in-respond text-center mt-4">
 
-
+                                        @if(Session::has('message'))
+                                        <p class="alert alert-info">{{ Session::get('message') }}</p>
+                                        @endif
 
 
                                         <form method="post" action="registration-process" style="margin:25px 0;">
-                                            <input type="hidden" name="token" id="token" value="" />
-
+                                            @csrf
                                             <div class="row">
 
 
