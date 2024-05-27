@@ -150,7 +150,7 @@
 
                                     <div class="sign-in-respond text-center mt-4">
                                         <form method="post" action="login-process" style="margin:25px 0;">
-                                            <input type="hidden" name="token" id="token" value="" />
+                                            @csrf
 
                                             <div class="row">
 

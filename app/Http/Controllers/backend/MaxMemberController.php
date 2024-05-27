@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MaxMember;
 use App\Models\MaxAdmin;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
-
+use Symfony\Component\Console\Input\Input;
 
 class MaxMemberController extends Controller
 {
@@ -26,6 +28,7 @@ class MaxMemberController extends Controller
     {
 
         // dd($req->input());
+        //    echo  Crypt::encrypt("abc@123");
         // die;
 
         $admin = MaxAdmin::latest()->first();
@@ -40,14 +43,30 @@ class MaxMemberController extends Controller
         $member->sponsorid = $req->input("sponsorid");
         $member->firstname = $req->input("name");
         $member->email = $req->input("email");
-        $member->password = $password = rand(10000,99999);
+        $password = rand(10000, 99999);
+        $member->password = Crypt::encrypt($password);
         $member->country_code = $req->input("country_code");
         $member->phone = $req->input("phone");
         $member->save();
         // Example flash message
         // $req->session()->flash('message', 'This is a flash message');
-        Session::flash('message', "User registered successfully! Your Password is: $password");
+        Session::flash('message', "User registered successfully! Your UserID & Password is: $member->userid , $password ");
 
         return redirect('register');
+    }
+    function login(Request $req)
+    {
+
+        // dd($req->input());
+        // //    echo  Crypt::encrypt("abc@123");
+        // die;
+
+        $user = MaxMember::where("userid", $req->input('userid'))->get();
+
+        $decpassword = Crypt::decrypt($user[0]->password);
+        if (Crypt::decrypt($user[0]->password) == $req->input('password')) {
+            return redirect('dash');
+        }
+        return $decpassword;
     }
 }

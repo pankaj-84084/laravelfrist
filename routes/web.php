@@ -20,3 +20,4 @@ Route::get('register', [RegisterController::class, 'index']);
 Route::get('members', [MaxMemberController::class, 'index']);
 
 Route::post('registration-process',[MaxMemberController::class,'register']);
+Route::post('login-process',[MaxMemberController::class,'login']);
